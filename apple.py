@@ -1,7 +1,11 @@
-from spg.utils.definitions import CollisionTypes
+from spg.utils.definitions import CollisionTypes, add_custom_collision
 from spg.element import PhysicalElement, RewardElement
 
+# Create a Custom Collision Type
+AppleCollisionType = add_custom_collision(CollisionTypes, "APPLE")
 
+
+# Create Apple Class
 class Apple(PhysicalElement, RewardElement):
     def __init__(self, agent):
 
@@ -11,23 +15,14 @@ class Apple(PhysicalElement, RewardElement):
             radius=10,
         )
 
-        self.agent = agent
+        self.agent = agent.base
 
+    # Every Apple created will use the new custom collision type
     def _set_pm_collision_type(self):
         for pm_shape in self._pm_shapes:
-            pm_shape.collision_type = CollisionTypes.GEM
+            pm_shape.collision_type = AppleCollisionType.APPLE
 
+    # Sets the reward for agent to receive upon interacting with Apple
     @property
     def _base_reward(self) -> float:
         return 10
-
-    def activate(self, entity: RewardElement):
-
-        assert self._playground
-
-        agent = self._playground.get_closest_agent(self)
-        agent.reward += entity.reward
-
-        self._playground.remove(entity)
-
-"import add custom coolisions"

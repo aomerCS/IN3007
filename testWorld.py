@@ -6,29 +6,29 @@ from spg.playground.collision_handlers import get_colliding_entities
 from spg.utils.definitions import CollisionTypes
 from spg.view import HeadAgentGUI
 
-from apple import Apple
+from apple import Apple, AppleCollisionType
+from spg.agent.part import ForwardBase
 
 
+# Created a Custom Collision Handler to confirm when an Apple and Agent collide
 def apple_agent_collision(arbiter, _, data):
 
     playground: Playground = data["playground"]
     (apple, _), (agent, _) = get_colliding_entities(playground, arbiter)
 
     assert isinstance(apple, Apple)
-    assert isinstance(agent, HeadAgent)
+    assert isinstance(agent, ForwardBase)
 
     if apple.agent == agent:
-        apple.activate(agent)
-        #agent.apply_commands({"forward": 0.2})
-        #self._agent_commands["forward"] = 0.2
-        #agent.activate(apple)
+        print("collision")
 
     return True
 
 
+# Initialization of Playground and Entities
 playground = Room(size=(500, 200), wall_color=arcade.color.AMARANTH_PURPLE)
 playground.add_interaction(
-    CollisionTypes.GEM, CollisionTypes.GEM, apple_agent_collision
+    AppleCollisionType.APPLE, CollisionTypes.PART, apple_agent_collision
 )
 
 agent = HeadAgent()
@@ -36,9 +36,8 @@ agent = HeadAgent()
 playground.add(agent)
 
 apple = Apple(agent)
-apple.graspable = True
+apple.graspable = False
 playground.add(apple, ((-200, 60), 0))
-
 
 gui = HeadAgentGUI(playground, agent)
 gui.run()
