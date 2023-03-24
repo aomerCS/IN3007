@@ -26,3 +26,4 @@ class Apple(PhysicalElement, RewardElement):
     @property
     def _base_reward(self) -> float:
         return 10
+

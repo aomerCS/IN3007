@@ -6,9 +6,10 @@ from spg.playground.collision_handlers import get_colliding_entities
 from spg.utils.definitions import CollisionTypes
 from spg.view import HeadAgentGUI
 
-from apple import Apple, AppleCollisionType
 from spg.agent.part import ForwardBase
-
+from apple import Apple, AppleCollisionType
+from reversedForwardBase import ReversedForwardBase
+from ReverseHeadAgent import ReverseHeadAgent
 
 # Created a Custom Collision Handler to confirm when an Apple and Agent collide
 def apple_agent_collision(arbiter, _, data):
@@ -17,10 +18,10 @@ def apple_agent_collision(arbiter, _, data):
     (apple, _), (agent, _) = get_colliding_entities(playground, arbiter)
 
     assert isinstance(apple, Apple)
-    assert isinstance(agent, ForwardBase)
+    assert isinstance(agent, ReversedForwardBase)
 
     if apple.agent == agent:
-        print("collision")
+        agent.activate(apple)
 
     return True
 
@@ -31,7 +32,7 @@ playground.add_interaction(
     AppleCollisionType.APPLE, CollisionTypes.PART, apple_agent_collision
 )
 
-agent = HeadAgent()
+agent = ReverseHeadAgent()
 
 playground.add(agent)
 
