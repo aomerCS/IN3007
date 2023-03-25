@@ -14,7 +14,7 @@ class ReversedForwardBase(PhysicalPart):
             self,
             linear_ratio: float = 1,
             angular_ratio: float = 1,
-            reverse_value: bool = False,
+            reverse: bool = False,
             **kwargs,
     ):
         super().__init__(
@@ -25,19 +25,19 @@ class ReversedForwardBase(PhysicalPart):
             **kwargs,
         )
 
-        self.reverse = reverse_value
         self.forward_controller = CenteredContinuousController("forward")
         self.add(self.forward_controller)
 
         self.angular_vel_controller = CenteredContinuousController("angular")
         self.add(self.angular_vel_controller)
 
-        if self.reverse:
-            self.linear_ratio = -LINEAR_FORCE * linear_ratio
-            self.angular_ratio = -ANGULAR_VELOCITY * angular_ratio
-        else:
-            self.linear_ratio = LINEAR_FORCE * linear_ratio
-            self.angular_ratio = ANGULAR_VELOCITY * angular_ratio
+        if reverse:
+            value = -1
+        if not reverse:
+            value = 1
+
+        self.linear_ratio = value * LINEAR_FORCE * linear_ratio
+        self.angular_ratio = value * ANGULAR_VELOCITY * angular_ratio
 
     def _apply_commands(self, **kwargs):
 
@@ -52,13 +52,7 @@ class ReversedForwardBase(PhysicalPart):
 
     def activate(self, entity: RewardElement):
 
-        self.reverse = not self.reverse
-
-        if self.reverse:
-            self.linear_ratio = -LINEAR_FORCE * self.linear_ratio
-            self.angular_ratio = -ANGULAR_VELOCITY * self.angular_ratio
-        else:
-            self.linear_ratio = LINEAR_FORCE * self.linear_ratio
-            self.angular_ratio = ANGULAR_VELOCITY * self.angular_ratio
+        self.linear_ratio = -self.linear_ratio
+        self.angular_ratio = -self.angular_ratio
 
         self._playground.remove(entity)

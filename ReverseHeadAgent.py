@@ -14,7 +14,7 @@ class ReverseHeadAgent(Agent):
 
         super().__init__(**kwargs)
 
-        base = ReversedForwardBase(linear_ratio=10, reverse_value=True)
+        base = ReversedForwardBase(linear_ratio=10, reverse=True)
         self.add(base)
 
         self.head = Head(rotation_range=math.pi)
