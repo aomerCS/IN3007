@@ -14,7 +14,8 @@ class ReversedForwardBase(PhysicalPart):
             self,
             linear_ratio: float = 1,
             angular_ratio: float = 1,
-            reverse: bool = False,
+            reverse_x: bool = False,
+            reverse_y: bool = False,
             **kwargs,
     ):
         super().__init__(
@@ -31,13 +32,13 @@ class ReversedForwardBase(PhysicalPart):
         self.angular_vel_controller = CenteredContinuousController("angular")
         self.add(self.angular_vel_controller)
 
-        if reverse:
-            value = -1
-        if not reverse:
-            value = 1
+        self.linear_ratio = LINEAR_FORCE * linear_ratio
+        self.angular_ratio = ANGULAR_VELOCITY * angular_ratio
 
-        self.linear_ratio = value * LINEAR_FORCE * linear_ratio
-        self.angular_ratio = value * ANGULAR_VELOCITY * angular_ratio
+        if reverse_x:
+            self.linear_ratio = -self.linear_ratio
+        if reverse_y:
+            self.angular_ratio = -self.angular_ratio
 
     def _apply_commands(self, **kwargs):
 
@@ -52,7 +53,13 @@ class ReversedForwardBase(PhysicalPart):
 
     def activate(self, entity: RewardElement):
 
+        # Reverses the direction of the base
         self.linear_ratio = -self.linear_ratio
         self.angular_ratio = -self.angular_ratio
 
+        # Gives the colliding entity a reward
+        agent = self._playground.get_closest_agent(self)
+        agent.reward += entity.reward
+
+        # Deletes the entity that the base collided with from the playground
         self._playground.remove(entity)

@@ -11,7 +11,8 @@ class Apple(PhysicalElement, RewardElement):
 
         super().__init__(
             mass=10,
-            filename=":spg:platformer/items/diamond_blue.png",
+            #filename=":spg:platformer/items/diamond_blue.png",
+            filename="red_apple.png",
             radius=10,
         )
 
@@ -25,5 +26,5 @@ class Apple(PhysicalElement, RewardElement):
     # Sets the reward for agent to receive upon interacting with Apple
     @property
     def _base_reward(self) -> float:
-        return 10
+        return 10.0
 
