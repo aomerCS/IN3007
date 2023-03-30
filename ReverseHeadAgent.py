@@ -10,11 +10,11 @@ from spg.agent.sensor import DistanceSensor, RGBSensor
 
 
 class ReverseHeadAgent(Agent):
-    def __init__(self, **kwargs):
+    def __init__(self, reverse_x: bool = False, reverse_y: bool = False, **kwargs):
 
         super().__init__(**kwargs)
 
-        base = ReversedForwardBase(linear_ratio=10, reverse_x=True, reverse_y=True)
+        base = ReversedForwardBase(linear_ratio=10, reverse_x=reverse_x, reverse_y=reverse_y)
         self.add(base)
 
         self.head = Head(rotation_range=math.pi)
