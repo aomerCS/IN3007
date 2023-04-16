@@ -1,20 +1,21 @@
-from reversedForwardBase import ReversedForwardBase
+from entities.reversedForwardBase import ReversedForwardBase
 
 import math
 
 from spg.agent import Agent
 from spg.agent.communicator import Communicator
 from spg.agent.interactor import GraspHold
-from spg.agent.part import ForwardBase, Head
+from spg.agent.part import Head
 from spg.agent.sensor import DistanceSensor, RGBSensor
 
 
 class ReverseHeadAgent(Agent):
     def __init__(self, reverse_x: bool = False, reverse_y: bool = False, **kwargs):
-
         super().__init__(**kwargs)
 
-        base = ReversedForwardBase(linear_ratio=10, reverse_x=reverse_x, reverse_y=reverse_y)
+        base = ReversedForwardBase(
+            linear_ratio=10, reverse_x=reverse_x, reverse_y=reverse_y
+        )
         self.add(base)
 
         self.head = Head(rotation_range=math.pi)

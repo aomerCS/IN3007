@@ -1,22 +1,22 @@
 from __future__ import annotations
 
-import numpy as np
 import pymunk
 from spg.element import RewardElement
 
 from spg.utils.definitions import ANGULAR_VELOCITY, LINEAR_FORCE
 from spg.agent.controller import CenteredContinuousController
-from spg.agent.part import AnchoredPart, PhysicalPart
+from spg.agent.part import PhysicalPart
 
 
 class ReversedForwardBase(PhysicalPart):
     def __init__(
-            self,
-            linear_ratio: float = 1,
-            angular_ratio: float = 1,
-            reverse_x: bool = False,
-            reverse_y: bool = False,
-            **kwargs,
+        self,
+        linear_ratio: float = 1,
+        angular_ratio: float = 1,
+        # Part of the new reverse features
+        reverse_x: bool = False,
+        reverse_y: bool = False,
+        **kwargs,
     ):
         super().__init__(
             mass=30,
@@ -35,13 +35,13 @@ class ReversedForwardBase(PhysicalPart):
         self.linear_ratio = LINEAR_FORCE * linear_ratio
         self.angular_ratio = ANGULAR_VELOCITY * angular_ratio
 
-        if reverse_x:
-            self.linear_ratio = -self.linear_ratio
+        # Reverses the direction of the base
         if reverse_y:
+            self.linear_ratio = -self.linear_ratio
+        if reverse_x:
             self.angular_ratio = -self.angular_ratio
 
     def _apply_commands(self, **kwargs):
-
         command_value = self.forward_controller.command_value
 
         self._pm_body.apply_force_at_local_point(
@@ -52,11 +52,11 @@ class ReversedForwardBase(PhysicalPart):
         self._pm_body.angular_velocity = command_value * self.angular_ratio
 
     def activate(self, entity: RewardElement):
-
         # Reverses the direction of the base
-        self.linear_ratio = -self.linear_ratio
-        self.angular_ratio = -self.angular_ratio
-
+        if entity.reverse_y:
+            self.linear_ratio = -self.linear_ratio
+        if entity.reverse_x:
+            self.angular_ratio = -self.angular_ratio
         # Gives the colliding entity a reward
         agent = self._playground.get_closest_agent(self)
         agent.reward += entity.reward

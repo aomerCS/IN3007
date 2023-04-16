@@ -7,16 +7,17 @@ AppleCollisionType = add_custom_collision(CollisionTypes, "APPLE")
 
 # Create Apple Class
 class Apple(PhysicalElement, RewardElement):
-    def __init__(self, agent):
-
+    def __init__(self, agent, reverse_x: bool = True, reverse_y: bool = True):
         super().__init__(
             mass=10,
-            #filename=":spg:platformer/items/diamond_blue.png",
-            filename="red_apple.png",
+            filename=":spg:platformer/items/diamond_blue.png",#filename="red_apple.png",
             radius=10,
         )
 
         self.agent = agent.base
+        self.type = type
+        self.reverse_x = reverse_x
+        self.reverse_y = reverse_y
 
     # Every Apple created will use the new custom collision type
     def _set_pm_collision_type(self):
@@ -27,4 +28,3 @@ class Apple(PhysicalElement, RewardElement):
     @property
     def _base_reward(self) -> float:
         return 10.0
-
