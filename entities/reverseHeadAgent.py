@@ -1,3 +1,5 @@
+# Assume any code that does not have a line stating it was changed, was taken from the file in the spg library spg/agent/agents
+
 from entities.reversedForwardBase import ReversedForwardBase
 
 import math
@@ -13,6 +15,7 @@ class ReverseHeadAgent(Agent):
     def __init__(self, reverse_x: bool = False, reverse_y: bool = False, **kwargs):
         super().__init__(**kwargs)
 
+        # This is the only line changed from the HeadAgent class
         base = ReversedForwardBase(
             linear_ratio=10, reverse_x=reverse_x, reverse_y=reverse_y
         )
@@ -47,3 +50,7 @@ class ReverseHeadAgent(Agent):
         # Grapser
         grasp = GraspHold(base)
         self.base.add(grasp)
+
+    # Added a setter for the head to allow turning
+    def setHead(self, value: float):
+        self.head = value

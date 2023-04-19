@@ -1,3 +1,5 @@
+# Assume any code that does not have a line stating it was changed or comment explaining it, was taken from the file in the spg library spg/part/parts
+
 from __future__ import annotations
 
 import pymunk
@@ -10,13 +12,13 @@ from spg.agent.part import PhysicalPart
 
 class ReversedForwardBase(PhysicalPart):
     def __init__(
-        self,
-        linear_ratio: float = 1,
-        angular_ratio: float = 1,
-        # Part of the new reverse features
-        reverse_x: bool = False,
-        reverse_y: bool = False,
-        **kwargs,
+            self,
+            linear_ratio: float = 1,
+            angular_ratio: float = 1,
+            # Part of the new reverse features
+            reverse_x: bool = False,
+            reverse_y: bool = False,
+            **kwargs,
     ):
         super().__init__(
             mass=30,
@@ -63,3 +65,10 @@ class ReversedForwardBase(PhysicalPart):
 
         # Deletes the entity that the base collided with from the playground
         self._playground.remove(entity)
+
+    def setForwardController(self, value: float):
+        self.forward_controller = value
+
+    def setAngularController(self, value: float):
+        self.angular_vel_controller = value
+
