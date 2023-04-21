@@ -16,16 +16,19 @@ class perturbationEnv(Env):
         self.playground = createPlayground()
         self.playground.time_limit = 1000
         self.agent = self.playground.agents[0]
-
         #self.gui = GUI(self.playground, self.agent)
+        self.episodes = 0
+
         #self.agent.cls(controller.External())
 
         # CenteredContinuousController actions are value between 1 and -1
-        # First value is for linear control, second is for angular control
+        # First value is for linear control, second is for angular control, third is for head
         self.action_space = spaces.Box(
-            low=np.array([-1.0, -1.0, -1.0]),
-            high=np.array([1.0, 1.0, 1.0]),
-            shape=(3,))
+            low=-1,
+            high=1,
+            shape=(len(self.agent.controllers),),
+            dtype=np.float32,
+        )
 
         # Create observation space
         self._get_obs()
@@ -36,24 +39,27 @@ class perturbationEnv(Env):
         actions_dict = {}
 
         for actuator, act in zip(self.agent.controllers, action):
-            #if isinstance(controller)
             actions_dict[actuator] = act
 
         actions_to_game_engine[self.agent] = actions_dict
 
         observation, msg, reward, done = self.playground.step()
+        #observation, msg, reward, done = self.playground.step(commands=actions_to_game_engine)
+        observation = observation[self.agent]
+        reward = reward[self.agent]
 
-        # if self.playground.timestep > self.playground.time_limit:
-        #     truncated = True
-        # else:
-        #     truncated = False
+        # Needed for initialization
+        if observation is None:
+            observation = np.zeros(shape=self.observation_space.shape)
+        if msg is None:
+            msg = {}
 
         return observation, reward, done, msg
 
-    #def render(self):
-        #gui.run()
-        #view.get_np_img()
-        #return self.gui.get_np_img()
+    # def render(self, mode):
+    #     #gui.run()
+    #     #view.get_np_img()
+    #     return self.gui.get_np_img()
 
     def reset(self):
         # if seed is not None:

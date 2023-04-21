@@ -43,7 +43,6 @@ class GymGUI(TopDownView):
         self._playground.window.set_size(*self._size)
         self._playground.window.set_visible(True)
 
-        self._keyboard_agent = keyboard_agent
         self._random_agents = random_agents
 
         self._agent_commands: Dict[Controller, Command] = {}
@@ -97,9 +96,6 @@ class GymGUI(TopDownView):
             for agent in self._playground.agents:
                 command_dict[agent] = agent.get_random_commands()
 
-        if self._keyboard_agent:
-            command_dict[self._keyboard_agent] = self._agent_commands
-
         return command_dict
 
     def update(self, force=False):
@@ -123,34 +119,3 @@ class GymGUI(TopDownView):
         self._zone_sprites.draw(pixelated=True)
         self._visible_sprites.draw(pixelated=True)
         self._traversable_sprites.draw(pixelated=True)
-
-    def on_key_press(self, key, modifiers):
-        """Called whenever a key is pressed."""
-
-        self._keyboard_agent_key_press(key, modifiers)
-
-        if key == arcade.key.Q:
-            self._playground.window.close()
-
-        if key == arcade.key.R:
-            self._playground.reset()
-
-        if key == arcade.key.S:
-            self._draw_sensors = not self._draw_sensors
-
-    def on_key_release(self, key, modifiers):
-
-        self._keyboard_agent_key_release(key, modifiers)
-
-    def _keyboard_agent_key_press(self, key, modifiers):
-        """
-        Implement for your agent
-        """
-
-    def _keyboard_agent_key_release(self, key, modifiers):
-        """
-        Implement for your agent
-        """
-
-
-
