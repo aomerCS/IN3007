@@ -65,10 +65,3 @@ class ReversedForwardBase(PhysicalPart):
 
         # Deletes the entity that the base collided with from the playground
         self._playground.remove(entity)
-
-    def setForwardController(self, value: float):
-        self.forward_controller = value
-
-    def setAngularController(self, value: float):
-        self.angular_vel_controller = value
-

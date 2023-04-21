@@ -1,9 +1,9 @@
 import gymnasium as gym
-from gym_env.envs.pertubation_world import PerturbationEnv
+from gym_env.envs.pertubation_world import perturbationEnv
 
 from stable_baselines3 import PPO
 
-env = PerturbationEnv()
+env = perturbationEnv()
 #env = gym.make("gym_env:gym_env/perturbationEnv-v0")
 
 model = PPO("MlpPolicy", env, verbose=1)

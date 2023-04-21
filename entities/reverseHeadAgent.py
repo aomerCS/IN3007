@@ -50,7 +50,3 @@ class ReverseHeadAgent(Agent):
         # Grapser
         grasp = GraspHold(base)
         self.base.add(grasp)
-
-    # Added a setter for the head to allow turning
-    def setHead(self, value: float):
-        self.head = value

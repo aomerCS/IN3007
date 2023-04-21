@@ -67,7 +67,7 @@ def createPlayground():
     return playground
 
 
-#pg = createPlayground()
-#gui = GUI(pg, pg.agents[0])
-#gui.run()
+# pg = createPlayground()
+# gui = GUI(pg, pg.agents[0])
+# gui.run()
 # Code that if all apples are eaten, a super apple with 100 reward will spawn in the center

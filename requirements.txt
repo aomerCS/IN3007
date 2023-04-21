@@ -12,4 +12,3 @@ tqdm
 spg
 jupyter
 stable-baselines3
-tensorflow
