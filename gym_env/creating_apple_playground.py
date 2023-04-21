@@ -1,11 +1,10 @@
-# Simple environment showcasing the apple agent collision
+# Methods to create playgrounds that can be loaded to different python files
 
 import arcade
 
 from spg.playground import Playground, Room
 from spg.playground.collision_handlers import get_colliding_entities
 from spg.utils.definitions import CollisionTypes
-from spg.view import HeadAgentGUI, GUI
 from spg.element import ColorWall
 
 # My Custom Entities
@@ -51,6 +50,7 @@ def createPlayground():
     apple4 = Apple(agent, reverse_x=True, reverse_y=True)
     playground.add(apple4, ((-100, -100), 0))
 
+    # Initialization of walls
     wall = ColorWall(
         pos_start=(50, 50), pos_end=(100, 100), width=5, color=arcade.color.AERO_BLUE
     )
@@ -64,10 +64,5 @@ def createPlayground():
     )
     playground.add(wall3, wall3.wall_coordinates)
 
+    # Our playground is now preset for usage
     return playground
-
-
-# pg = createPlayground()
-# gui = GUI(pg, pg.agents[0])
-# gui.run()
-# Code that if all apples are eaten, a super apple with 100 reward will spawn in the center

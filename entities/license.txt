@@ -1,4 +1,2 @@
-Attribution required for red_apple.png
-https://www.vecteezy.com/free-png/apple" Apple PNGs by Vecteezy
-
-Link used to acquire image: https://www.vecteezy.com/png/19040577-an-8-bit-retro-styled-pixel-art-illustration-of-a-red-apple
+red_apple.png image is public domain, no copyright license required
+Link to obtain image: https://commons.wikimedia.org/wiki/File:PixelApple.png

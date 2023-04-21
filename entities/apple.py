@@ -10,7 +10,7 @@ class Apple(PhysicalElement, RewardElement):
     def __init__(self, agent, reverse_x: bool = True, reverse_y: bool = True):
         super().__init__(
             mass=10,
-            filename=":spg:platformer/items/diamond_blue.png",#filename="red_apple.png",
+            filename="../entities/red_apple.png",
             radius=10,
         )
 

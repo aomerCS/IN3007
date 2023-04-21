@@ -47,6 +47,4 @@ class ReverseHeadAgent(Agent):
         self.comm = Communicator()
         self.base.add(self.comm)
 
-        # Grapser
-        grasp = GraspHold(base)
-        self.base.add(grasp)
+        # Grapser has been removed due to it not being needed for this project
