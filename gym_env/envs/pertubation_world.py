@@ -16,8 +16,7 @@ class PerturbationEnv(Env):
         self.playground = createPlayground()
         self.playground.time_limit = 1000
         self.agent = self.playground.agents[0]
-        self.gui = None
-        #self.gui = GUI(self.playground)
+        self.gui = TopDownView(self.playground)
         self.episodes = 0
 
         self._get_act_space()
@@ -40,21 +39,25 @@ class PerturbationEnv(Env):
         if msg is None:
             msg = {}
 
-        self.update_render()
-        #self.gui.on_draw()
+        #self.update_render()
+        #self.gui.update()
+        if isinstance(self.gui, GUI):
+            self.gui.on_draw()
+        if isinstance(self.gui, TopDownView):
+            self.gui.update()
 
         done = bool(reward == 10.0)
 
         return observation, reward, done, msg
 
     def render(self, mode="rgb_array"):
-        if mode == "rgb_array":
-            self.gui = TopDownView(self.playground)
-            self.gui.draw()
         if mode == "human":
+            # Displays an arcade window
             self.gui = GUI(self.playground)
             self.playground.window.run()
-        #self.gui.draw()
+        else:
+            # Plots numpy array of the playground
+            self.gui.draw()
         return self.gui.get_np_img()
 
     def reset(self):
@@ -109,10 +112,3 @@ class PerturbationEnv(Env):
             return np.zeros(shape=self.observation_space.shape)
         else:
             return observation
-
-    def update_render(self):
-        if isinstance(self.gui, GUI):
-            self.gui.on_draw()
-        if isinstance(self.gui, TopDownView):
-            self.gui.update()
-        return None

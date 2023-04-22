@@ -26,7 +26,7 @@ env.reset()
 
 # Example of random actions
 for step in range(200):
-    env.render("human")
+    env.render("rgb_array")
     env.step(env.action_space.sample())
 
 # model = PPO("MlpPolicy", env, verbose=1)
