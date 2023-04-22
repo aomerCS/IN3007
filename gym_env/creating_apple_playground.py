@@ -34,6 +34,48 @@ def createPlayground():
     )
 
     # Initialization of agent (can reverse X or Y controls on creation)
+    agent = ReverseHeadAgent(reverse_x=False, reverse_y=False)
+    playground.add(agent)
+
+    # Initialization of apple (reversing of X or Y controls for agent will occur to agent on collision)
+    apple1 = Apple(agent, reverse_x=False, reverse_y=False)
+    playground.add(apple1, ((-100, 30), 0))
+
+    apple2 = Apple(agent, reverse_x=False, reverse_y=False)
+    playground.add(apple2, ((100, 10), 0))
+
+    apple3 = Apple(agent, reverse_x=False, reverse_y=False)
+    playground.add(apple3, ((100, 100), 0))
+
+    apple4 = Apple(agent, reverse_x=False, reverse_y=False)
+    playground.add(apple4, ((-100, -100), 0))
+
+    # Initialization of walls
+    wall = ColorWall(
+        pos_start=(50, 50), pos_end=(100, 100), width=5, color=arcade.color.AERO_BLUE
+    )
+    playground.add(wall, ((50, 0), 0))
+    wall2 = ColorWall(
+        pos_start=(50, 50), pos_end=(100, 100), width=5, color=arcade.color.AERO_BLUE
+    )
+    playground.add(wall2, ((-50, 0), 0))
+    wall3 = ColorWall(
+        pos_start=(-50, 50), pos_end=(100, 50), width=5, color=arcade.color.AERO_BLUE
+    )
+    playground.add(wall3, wall3.wall_coordinates)
+
+    # Our playground is now preset for usage
+    return playground
+
+
+def createPlayground2():
+    # Initialization of Playground and entities
+    playground = Room(size=(256, 256), wall_color=arcade.color.AMARANTH_PURPLE)
+    playground.add_interaction(
+        AppleCollisionType.APPLE, CollisionTypes.PART, apple_agent_collision
+    )
+
+    # Initialization of agent (can reverse X or Y controls on creation)
     agent = ReverseHeadAgent(reverse_x=True, reverse_y=False)
     playground.add(agent)
 

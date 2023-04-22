@@ -16,25 +16,11 @@ class PerturbationEnv(Env):
         self.playground = createPlayground()
         self.playground.time_limit = 1000
         self.agent = self.playground.agents[0]
-        #self.gui = GUI(self.playground, self.agent)
-        self.gui = TopDownView(self.playground)
+        self.gui = None
+        #self.gui = GUI(self.playground)
         self.episodes = 0
 
-        # Create the action space
-        lows = []
-        highs = []
-
-        for controller in zip(self.agent.controllers):
-            lows.append(controller[0].min)
-            highs.append(controller[0].max)
-
-        self.action_space = spaces.Box(
-            low=np.array(lows).astype(np.float32),
-            high=np.array(highs).astype(np.float32),
-            dtype=np.float32,
-        )
-
-        # Create observation space
+        self._get_act_space()
         self._get_obs()
 
     def step(self, action):
@@ -54,15 +40,21 @@ class PerturbationEnv(Env):
         if msg is None:
             msg = {}
 
-        #self.playground.window.clear()
-        self.gui.update()
+        self.update_render()
+        #self.gui.on_draw()
+
+        done = bool(reward == 10.0)
 
         return observation, reward, done, msg
 
     def render(self, mode="rgb_array"):
-        # if mode == "rgb_array":
-        #     self.playground.window.run()
-        self.gui.draw()
+        if mode == "rgb_array":
+            self.gui = TopDownView(self.playground)
+            self.gui.draw()
+        if mode == "human":
+            self.gui = GUI(self.playground)
+            self.playground.window.run()
+        #self.gui.draw()
         return self.gui.get_np_img()
 
     def reset(self):
@@ -73,8 +65,29 @@ class PerturbationEnv(Env):
         self.episodes += 1
         return observation
 
+    def close(self):
+        # Closes the pygame window in case the program is abruptly closed
+        self.playground.window.close()
+
+    # Additional methods for functionality
+    # Code for action and observation space inspired from:
+    # https://github.com/gaorkl/spg-experiments/blob/master/spg_experiments/envs/spg/base.py
+
+    def _get_act_space(self):
+        lows = []
+        highs = []
+
+        for controller in zip(self.agent.controllers):
+            lows.append(controller[0].min)
+            highs.append(controller[0].max)
+
+        self.action_space = spaces.Box(
+            low=np.array(lows).astype(np.float32),
+            high=np.array(highs).astype(np.float32),
+            dtype=np.float32,
+        )
+
     def _get_obs(self):
-        # Code for observation space taken from: https://github.com/gaorkl/spg-experiments/blob/master/spg_experiments/envs/spg/base.py
         elems = 0
         for sensor in self.agent.sensors:
             if isinstance(sensor.shape, int):
@@ -97,5 +110,9 @@ class PerturbationEnv(Env):
         else:
             return observation
 
-    def close(self):
-        self.playground.window.close()
+    def update_render(self):
+        if isinstance(self.gui, GUI):
+            self.gui.on_draw()
+        if isinstance(self.gui, TopDownView):
+            self.gui.update()
+        return None
