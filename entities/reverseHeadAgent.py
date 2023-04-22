@@ -6,7 +6,6 @@ import math
 
 from spg.agent import Agent
 from spg.agent.communicator import Communicator
-from spg.agent.interactor import GraspHold
 from spg.agent.part import Head
 from spg.agent.sensor import DistanceSensor, RGBSensor
 
