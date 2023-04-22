@@ -3,14 +3,14 @@ from stable_baselines3.common.env_checker import check_env
 from stable_baselines3 import PPO
 import os
 
+# Create folders for storing models
 models_dir = "models/PPO"
 logdir = "logs"
 
-# if not os.path.exists(models_dir):
-#     os.makedirs(models_dir)
-# if not os.path.exists(logdir):
-#     os.makedirs(logdir)
+os.makedirs(models_dir, exist_ok=True)
+os.makedirs(logdir, exist_ok=True)
 
+# Load and initialize environment
 env = PerturbationEnv()
 env.reset()
 
@@ -26,7 +26,7 @@ env.reset()
 
 # Example of random actions
 for step in range(200):
-    env.render("rgb_array")
+    env.render("human")
     env.step(env.action_space.sample())
 
 # model = PPO("MlpPolicy", env, verbose=1)
@@ -41,5 +41,26 @@ for step in range(200):
 #     # VecEnv resets automatically
 #     # if done:
 #     #     obs = env.reset()
+
+# Save model
+# model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+# TIMESTEPS = 10000
+# for i in range(1, 10):
+#     model.learn(total_timesteps=TIMESTEPS, reset_num_timesteps=False, tb_log_name="PPO")
+#     model.save(f"{models_dir}/{TIMESTEPS*i}")
+
+# Load model
+# model_path = f"{models_dir}/90000.zip"
+# model = PPO.load(model_path, env=env)
+#
+# episodes = 10
+#
+# for ep in range(episodes):
+#     obs = env.reset()
+#     done = False
+#     while not done:
+#         env.render()
+#         action, _states = model.predict(obs)
+#         obs, reward, done, info = env.step(action)
 
 env.close()

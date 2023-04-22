@@ -32,15 +32,14 @@ class PerturbationEnv(Env):
 
         command_dict[self.agent] = commands
 
-        observation, msg, reward, done = self.playground.step(commands=command_dict)
+        observation, msg, reward, _done = self.playground.step(commands=command_dict)
         observation = self.fix_obs(observation=observation[self.agent])
         reward = reward[self.agent]
 
         if msg is None:
             msg = {}
 
-        #self.update_render()
-        #self.gui.update()
+        # Determines how the GUI will render (if rendering is occurring)
         if isinstance(self.gui, GUI):
             self.gui.on_draw()
         if isinstance(self.gui, TopDownView):
@@ -58,7 +57,7 @@ class PerturbationEnv(Env):
         else:
             # Plots numpy array of the playground
             self.gui.draw()
-        return self.gui.get_np_img()
+        return None
 
     def reset(self):
         # if seed is not None:
