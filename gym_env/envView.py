@@ -14,18 +14,20 @@ if TYPE_CHECKING:
 
 class GymGUI(TopDownView):
     def __init__(
-        self,
-        playground: Playground,
-        size: Optional[Tuple[int, int]] = None,
-        center: Tuple[float, float] = (0, 0),
-        zoom: float = 1,
-        display_uid: bool = False,
-        draw_transparent: bool = True,
-        draw_interactive: bool = True,
-        draw_zone: bool = True,
-        draw_sensors: bool = False,
-        print_rewards: bool = True,
-        print_messages: bool = True,
+            self,
+            playground: Playground,
+            keyboard_agent: Optional[Agent] = None,
+            size: Optional[Tuple[int, int]] = None,
+            center: Tuple[float, float] = (0, 0),
+            zoom: float = 1,
+            display_uid: bool = False,
+            draw_transparent: bool = True,
+            draw_interactive: bool = True,
+            draw_zone: bool = True,
+            draw_sensors: bool = False,
+            print_rewards: bool = True,
+            print_messages: bool = True,
+            random_agents: bool = True,
     ) -> None:
         super().__init__(
             playground,
@@ -41,6 +43,9 @@ class GymGUI(TopDownView):
         self._playground.window.set_size(*self._size)
         self._playground.window.set_visible(True)
 
+        self._keyboard_agent = keyboard_agent
+        self._random_agents = random_agents
+
         self._agent_commands: Dict[Controller, Command] = {}
         self._message = None
 
@@ -49,6 +54,8 @@ class GymGUI(TopDownView):
 
         self._playground.window.on_draw = self.on_draw
         self._playground.window.on_update = self.on_update
+        self._playground.window.on_key_press = self.on_key_press
+        self._playground.window.on_key_release = self.on_key_release
 
         self._draw_sensors = draw_sensors
 
@@ -81,6 +88,12 @@ class GymGUI(TopDownView):
                         print(f"Agent {agent.name} received message {msg}")
 
         self._message = {}
+
+    def _get_commands(self, commands: Dict[Controller, Command] = {} ):
+
+        command_dict[self._keyboard_agent] = commands
+
+        return command_dict
 
     def update(self, force=False):
 

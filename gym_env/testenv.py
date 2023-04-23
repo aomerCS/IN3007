@@ -25,10 +25,11 @@ env.reset()
 # check_env(env)
 
 # Example of random actions
-for step in range(200):
-    env.render("human")
-    env.step(env.action_space.sample())
+# for step in range(200):
+#     env.render("human")
+#     env.step(env.action_space.sample())
 
+# Training the model
 # model = PPO("MlpPolicy", env, verbose=1)
 # model.learn(total_timesteps=10_000)
 #
@@ -37,7 +38,7 @@ for step in range(200):
 # for i in range(1000):
 #     action, _states = model.predict(obs, deterministic=True)
 #     obs, reward, done, info = vec_env.step(action)
-#     vec_env.render("human")
+#     vec_env.render()
 #     # VecEnv resets automatically
 #     # if done:
 #     #     obs = env.reset()
@@ -62,5 +63,13 @@ for step in range(200):
 #         env.render()
 #         action, _states = model.predict(obs)
 #         obs, reward, done, info = env.step(action)
+
+
+#Testing work
+# done = False
+# while not done:
+#     env.render("rgb_array")
+#     obs, reward, done, msg = env.step(env.action_space.sample())
+#     print(obs, obs.shape)
 
 env.close()

@@ -33,17 +33,12 @@ class ReverseHeadAgent(Agent):
         )
         self.base.add(self.distance)
 
-        self.rgb = RGBSensor(
-            fov=180,
-            resolution=64,
-            max_range=400,
-            invisible_elements=self._parts,
-            invisible_when_grasped=True,
-        )
-        self.head.add(self.rgb)
+        # RGBSensor has been removed due to not having the opportunity
+        # to implement to environment
 
         # COMMS
         self.comm = Communicator()
         self.base.add(self.comm)
 
-        # Grapser has been removed due to it not being needed for this project
+        # Grapser has been removed due to not having the opportunity
+        # to implement to environment
