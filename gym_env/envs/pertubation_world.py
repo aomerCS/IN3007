@@ -1,11 +1,8 @@
 from gym import spaces
 from gym import Env
 import numpy as np
-from matplotlib import pyplot as plt
 
-from spg.view import GUI, TopDownView
-from gym_env.creating_apple_playground import createPlayground
-from gym_env.envView import GymGUI
+from spg.view import TopDownView
 
 
 class PerturbationEnv(Env):
@@ -13,13 +10,12 @@ class PerturbationEnv(Env):
 
     metadata = {"render.modes": ["human", "rgb_array"]}
 
-    def __init__(self):
+    def __init__(self, playground):
         super().__init__()
-        self.playground = createPlayground()
-        self.playground.time_limit = 1000
+        self.playground = playground
         self.agent = self.playground.agents[0]
+        self.playground.time_limit = 1000
         self.gui = TopDownView(self.playground)
-        #self.gui = GUI(self.playground, keyboard_agent=self.agent, random_agents=False)
 
         self.episodes = 0
         self.reward = 0
@@ -54,6 +50,8 @@ class PerturbationEnv(Env):
         )
 
     def step(self, action):
+        # Code for obtaining the controller names was taken from:
+        # https://github.com/gaorkl/spg-experiments/blob/master/spg_experiments/envs/spg/base.py
 
         commands = {}
         command_dict = {}
@@ -75,37 +73,17 @@ class PerturbationEnv(Env):
         # Checks if all apples have been eaten, or we have gone past the timelimit
         done = bool(self.reward == 40.0) or bool(self.playground.timestep >= self.playground.time_limit)
 
-        # Determines how the GUI will render (if rendering is occurring)
-        # if isinstance(self.gui, GUI):
-        #     self.gui.on_draw()
-        #     self.gui._agent_commands = command_dict
-        # if isinstance(self.gui, TopDownView):
-        #     self.gui.update()
-
-        # self.gui.on_draw()
-        # self.gui._agent_commands = command_dict
-
         self.gui.update()
 
         return observation, self.reward, done, msg
 
     def render(self, mode="rgb_array"):
-        if mode == "human":
-            # Displays an arcade window
-            #self.gui = GUI(self.playground, keyboard_agent=self.agent, draw_sensors=True, random_agents=False)
-            #self.gui = GUI(self.playground, keyboard_agent=None, draw_sensors =True, random_agents=False)
-            self.playground.window.run()
-        else:
-            # Plots numpy array of the playground
-            self.gui.draw()
-            plt.imsave("test.png", self.gui.get_np_img())
+        self.gui.draw()
         return self.gui.get_np_img()
 
     def reset(self):
         # if seed is not None:
         #     super().reset(seed=seed)
-        # observation = self.playground.reset()
-        # observation = self.fix_obs(observation=observation[0][self.agent])
         self.playground.reset()
         observation = self._get_obs()
         self.episodes += 1
