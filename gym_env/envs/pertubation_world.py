@@ -1,7 +1,7 @@
 from gym import spaces
 from gym import Env
 import numpy as np
-
+from matplotlib import pyplot as plt
 from spg.view import TopDownView
 
 
@@ -16,9 +16,9 @@ class PerturbationEnv(Env):
         self.agent = self.playground.agents[0]
         self.playground.time_limit = 1000
         self.gui = TopDownView(self.playground)
-
         self.episodes = 0
         self.reward = 0
+        self.images = []
 
         # Create action space
         lows = []
@@ -71,22 +71,25 @@ class PerturbationEnv(Env):
             msg = {}
 
         # Checks if all apples have been eaten, or we have gone past the timelimit
-        done = bool(self.reward == 40.0) or bool(self.playground.timestep >= self.playground.time_limit)
+        # done = bool(self.reward == 40.0) or bool(self.playground.timestep >= self.playground.time_limit)
+        done = bool(self.reward == 40.0)
 
         self.gui.update()
 
         return observation, self.reward, done, msg
 
     def render(self, mode="rgb_array"):
-        self.gui.draw()
-        return self.gui.get_np_img()
+        self.images.append(self.gui.get_np_img())
+        return None
 
     def reset(self):
         # if seed is not None:
         #     super().reset(seed=seed)
         self.playground.reset()
         observation = self._get_obs()
+        self.reward = 0
         self.episodes += 1
+        self.images = []
         return observation
 
     def close(self):
@@ -111,3 +114,7 @@ class PerturbationEnv(Env):
             obs_vec.append(v.ravel())
 
         return np.concatenate(obs_vec)
+
+    # Saves all images to a file to name.png
+    def save_images(self, name):
+        plt.imsave(f"pngs/{name}.png", np.concatenate(self.images))

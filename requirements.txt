@@ -5,10 +5,11 @@ scikit-image
 pillow
 pytest
 matplotlib
-gymnasium
+gym
 arcade
 tripy
 tqdm
 spg
 jupyter
 stable-baselines3
+black[jupyter]

@@ -1,3 +1,6 @@
+# Custom class that can create an apple within a playground
+# with the ability to manipulate the controls of the colliding body
+
 from spg.utils.definitions import CollisionTypes, add_custom_collision
 from spg.element import PhysicalElement, RewardElement
 

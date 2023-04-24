@@ -1,3 +1,8 @@
+# Custom class that allows the reversing of controls from a forwardBase
+# e.g. if a command of 1 is expected, if the criteria is met, reverseForwardBase returns -1 instead
+
+# This allows us to deceive a player due to their controls being reversed compared to what is expected
+
 # Assume any code that does not have a line stating it was changed or comment explaining it,
 # was taken from the file in the spg library spg/part/parts
 
@@ -13,13 +18,13 @@ from spg.agent.part import PhysicalPart
 
 class ReversedForwardBase(PhysicalPart):
     def __init__(
-            self,
-            linear_ratio: float = 1,
-            angular_ratio: float = 1,
-            # reverse_x and reverse_y will determine if the controller commands of the agent is reversed
-            reverse_x: bool = False,
-            reverse_y: bool = False,
-            **kwargs,
+        self,
+        linear_ratio: float = 1,
+        angular_ratio: float = 1,
+        # reverse_x and reverse_y will determine if the controller commands of the agent is reversed
+        reverse_x: bool = False,
+        reverse_y: bool = False,
+        **kwargs,
     ):
         super().__init__(
             mass=30,

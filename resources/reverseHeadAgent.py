@@ -1,7 +1,9 @@
-# Assume any code that does not have a line stating it was changed,
-# was taken from the file in the spg library spg/agent/agents
+# Custom class that creates an Agent with their first part as the ReversedForwardBase instead of a ForwardBase
+# This agent is now capable of being manipulated using the ReversedForwardBase, mainly by having their control reversed
 
-# Custom class created for this project
+# Assume any code that does not have a line stating it was changed or comment explaining it,
+# was taken from the file in the spg library spg/agent/agents, specifically the HeadAgent class
+
 from resources.reversedForwardBase import ReversedForwardBase
 
 import math

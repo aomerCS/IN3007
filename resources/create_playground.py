@@ -32,7 +32,7 @@ def apple_agent_collision(arbiter, _, data):
 # Each apple must have two tuples inside
 # The first tuple will indicate its position within the playground (pos_x, pos_y)
 # The second determines the effects it will have upon colliding with an agent (reverse_x, reverse_y)
-def createPlayground(agent_reverse: tuple, apples: list[list[tuple]]):
+def createPlayground(agent_reverse: tuple = (), apples: list[list[tuple]] = [[(), ()]]):
     # Initialization of Playground and resources
     playground = Room(size=(256, 256), wall_color=arcade.color.AMARANTH_PURPLE)
     playground.add_interaction(
