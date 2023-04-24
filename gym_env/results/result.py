@@ -1,5 +1,5 @@
 # Import of custom gym.Env
-from gym_env.envs.pertubation_world import PerturbationEnv
+from gym_env.envs.perturbation_world import PerturbationEnv
 
 # Import checker to ensure environment is suitable for StableBaselines usage
 from stable_baselines3.common.env_checker import check_env
@@ -10,10 +10,15 @@ from stable_baselines3.common.evaluation import evaluate_policy
 # Import reinforcement learning algorithm library
 from stable_baselines3 import A2C, DDPG, HER, SAC, TD3, PPO
 
+# Needed for creating new directories
+import os
+from pathlib import Path
+
 # Create playground
 from resources.create_playground import createPlayground
 
-playground2 = createPlayground(
+# Simplest playground, no perturbation
+playground1 = createPlayground(
     (True, True),
     [
         [(-100, 30), (True, True)],
@@ -24,38 +29,44 @@ playground2 = createPlayground(
 )
 
 # Load and initialize environment
-env = PerturbationEnv(playground2)
+env = PerturbationEnv(playground1)
 
 # Training, saving, and loading
 
 # Create folders for storing models
-models_dir = "models/PPO"
+models_dir = Path("models/PPO")
 logdir = "logs"
 
-# #Save model
-# model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
-# for i in range(1, 30):
-#     model.learn(total_timesteps=env.playground.time_limit, reset_num_timesteps=False, tb_log_name="PPO")
-#     model.save(f"{models_dir}/{env.playground.time_limit*i}")
+os.makedirs(models_dir, exist_ok=True)
+os.makedirs(logdir, exist_ok=True)
+
+#Save model
+model = PPO("MlpPolicy", env, verbose=1, tensorboard_log=logdir)
+for i in range(1, 30):
+    model.learn(total_timesteps=env.playground.time_limit, reset_num_timesteps=False, tb_log_name="PPO")
+    model.save(Path(f"{models_dir}/{env.playground.time_limit*i}"))
+del model
 
 # Load model
-model_path = f"{models_dir}/9000.zip"
-model = PPO.load(path=model_path, env=env)
-
-# # Evaluate the agent
-# mean_reward, std_reward = evaluate_policy(model, model.get_env(), n_eval_episodes=10)
-# print(f"Mean Reward: {mean_reward}, std_reward: {std_reward}")
+model_path = Path(f"{models_dir}/9000.zip")
+model = PPO.load(path=model_path, env=env, print_system_info=True)
 
 results = []
-for ep in range(1, 10):
+for episode in range(1, 10):
     obs = env.reset()
     done = False
     while not done:
-        action, _states = model.predict(obs)
-        obs, reward, done, info = env.step(action)
-        env.render()
-    results.append(reward)
-    env.save_images(f"PPO_V0_{ep}")
+        if env.playground.timestep >= env.playground.time_limit:
+            done = True
+            break
+        else:
+            action, _states = model.predict(obs)
+            obs, reward, done, info = env.step(action)
+            env.render()
+        print(f"Test {episode}, current timestep: {env.playground.timestep} Reward: {reward}, Done: {done}")
+    results.append([env.playground.timestep, reward, done])
+    env.save_images(f"PPO_V0_{episode}")
+print(f"[Timestep, Reward, Done]")
 print(results)
 
 env.close()

@@ -3,6 +3,7 @@
 
 from spg.utils.definitions import CollisionTypes, add_custom_collision
 from spg.element import PhysicalElement, RewardElement
+from pathlib import Path
 
 # Create a Custom Collision Type
 AppleCollisionType = add_custom_collision(CollisionTypes, "APPLE")
@@ -13,7 +14,7 @@ class Apple(PhysicalElement, RewardElement):
     def __init__(self, agent, reverse_x: bool = False, reverse_y: bool = False):
         super().__init__(
             mass=10,
-            filename="../../resources/red_apple.png",
+            filename=Path("../../resources/red_apple.png"),
             radius=10,
         )
 

@@ -3,6 +3,7 @@ from gym import Env
 import numpy as np
 from matplotlib import pyplot as plt
 from spg.view import TopDownView
+from pathlib import Path
 
 
 class PerturbationEnv(Env):
@@ -70,8 +71,7 @@ class PerturbationEnv(Env):
         if msg is None:
             msg = {}
 
-        # Checks if all apples have been eaten, or we have gone past the timelimit
-        # done = bool(self.reward == 40.0) or bool(self.playground.timestep >= self.playground.time_limit)
+        # Checks if all apples have been eaten
         done = bool(self.reward == 40.0)
 
         self.gui.update()
@@ -117,4 +117,4 @@ class PerturbationEnv(Env):
 
     # Saves all images to a file to name.png
     def save_images(self, name):
-        plt.imsave(f"pngs/{name}.png", np.concatenate(self.images))
+        plt.imsave(Path(f"pngs/{name}.png"), np.concatenate(self.images))

@@ -59,4 +59,5 @@
 # Potential Errors
 - Due to the amount of GPU/CPU power that is required to run reinforcement learning policies, the process of running these may take a large amount of time
 - The nature of reinforcement learning means that when these are run on your own machine, the models developed won't be identical to the ones in the notebook, however they will be similar enough to confirm that the results are real
-- The project was developed on a Windows machine, some errors may occur with directory path problems if using Linux/Mac - so it is recommended to run the project using Windows or change the paths when errors occurs (e.g. changing / to \ etc.)
+- The project was developed on a Windows machine, some errors may occur with directory path problems if using Linux/Mac
+  - The pathlib library was used when paths were involved - so it should work without any issues, however the project has not been thoroughly tested with those machines therefore it cannot be guaranteed
