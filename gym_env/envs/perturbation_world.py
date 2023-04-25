@@ -9,8 +9,6 @@ from pathlib import Path
 class PerturbationEnv(Env):
     """Custom Environment that follows gym interface"""
 
-    metadata = {"render.modes": ["human", "rgb_array"]}
-
     def __init__(self, playground):
         super().__init__()
         self.playground = playground
@@ -20,6 +18,9 @@ class PerturbationEnv(Env):
         self.episodes = 0
         self.reward = 0
         self.images = []
+
+        # Code for creating action and observation space taken from:
+        # https://github.com/gaorkl/spg-experiments/blob/master/spg_experiments/envs/spg/base.py
 
         # Create action space
         lows = []
@@ -66,7 +67,8 @@ class PerturbationEnv(Env):
 
         observation = self._get_obs()
 
-        self.reward += reward[self.agent]
+        self.reward += reward[self.agent] * 1000
+        self.reward -= self.playground.timestep / 100
 
         if msg is None:
             msg = {}
@@ -83,18 +85,12 @@ class PerturbationEnv(Env):
         return None
 
     def reset(self):
-        # if seed is not None:
-        #     super().reset(seed=seed)
         self.playground.reset()
         observation = self._get_obs()
         self.reward = 0
         self.episodes += 1
         self.images = []
         return observation
-
-    def close(self):
-        # Closes the pygame window in case the program is abruptly closed
-        self.playground.window.close()
 
     # Additional methods for functionality
     # Code for get and process observation taken from:

@@ -22,7 +22,7 @@
   - ### reversedHeadAgent
     - Custom class that creates an Agent with their first part as the ReversedForwardBase instead of a ForwardBase 
     - This agent is now capable of being manipulated using the ReversedForwardBase, mainly by having their control reversed
-- ## gym_game
+- ## gym_env
   - This folder contains everything related to the machine learning aspects of the project
   - ###init.py
     -  Contains the registration information for our custom gym environment
@@ -53,7 +53,7 @@
 # Tensorboard
 - To view the data, first open a terminal and starting from the IN3007 directory, move to gym_envs/results, then run the tensorboard command to open tensorboard locally
 - (Commands assume your starting directory is .... -> IN3007)
-- cd gym_env/results
+- cd gym_env/results (Using Windows /, change in your terminal if running Linux/Mac)
 - tensorboard --logdir=logs
 
 # Potential Errors
@@ -61,3 +61,12 @@
 - The nature of reinforcement learning means that when these are run on your own machine, the models developed won't be identical to the ones in the notebook, however they will be similar enough to confirm that the results are real
 - The project was developed on a Windows machine, some errors may occur with directory path problems if using Linux/Mac
   - The pathlib library was used when paths were involved - so it should work without any issues, however the project has not been thoroughly tested with those machines therefore it cannot be guaranteed
+  
+# MODEL SYSTEM INFO
+- OS: Windows-10-10.0.19044-SP0 10.0.19044
+- Python: 3.11.2
+- Stable-Baselines3: 1.8.0
+- PyTorch: 2.0.0+cpu
+- GPU Enabled: False
+- Numpy: 1.23.5
+- Gym: 0.21.0

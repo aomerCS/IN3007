@@ -1,4 +1,5 @@
 # Methods to create playgrounds that can be loaded to different python files
+import random
 
 import arcade
 
@@ -34,7 +35,7 @@ def apple_agent_collision(arbiter, _, data):
 # The second determines the effects it will have upon colliding with an agent (reverse_x, reverse_y)
 def createPlayground(agent_reverse: tuple = (), apples: list[list[tuple]] = [[(), ()]]):
     # Initialization of Playground and resources
-    playground = Room(size=(256, 256), wall_color=arcade.color.AMARANTH_PURPLE)
+    playground = Room(size=(256, 256), wall_color=arcade.color.AO)
     playground.add_interaction(
         AppleCollisionType.APPLE, CollisionTypes.PART, apple_agent_collision
     )
