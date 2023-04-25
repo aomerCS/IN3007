@@ -46,7 +46,7 @@
       - Contains the images of each step of our custom environment
       - Many steps will occur during testing/training, so the image file will be very long - it is recommended to look at the start and end to determine the progress the model took, however the image will show the entire history of the model if needed
 
-#How to run
+# How to run
 - Running IN3007/gym_env/results/result.ipynb will show all the results of the experiments (when downloaded, the jupyter notebook should contain the results from already executing the code)
 - In the event that IN3007/gym_env/results/result.ipynb does not run, the code within the jupyter notebook can be copied into a .py file (it is recommended to keep in the same directory under the name results.py) and run
 

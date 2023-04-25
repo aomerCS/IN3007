@@ -1,5 +1,5 @@
 # Simple environment showcasing the apple agent collision
-from gym_env.results.result import playground1
+from gym_env.results.results import playground1
 from spg.view import HeadAgentGUI
 
 # #gui = HeadAgentGUI(playground=playground1, keyboard_agent=playground1.agents[0], random_agents=False)

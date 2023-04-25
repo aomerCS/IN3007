@@ -11,7 +11,7 @@ import math
 from spg.agent import Agent
 from spg.agent.communicator import Communicator
 from spg.agent.part import Head
-from spg.agent.sensor import DistanceSensor
+from spg.agent.sensor import DistanceSensor, RGBSensor
 
 
 class ReverseHeadAgent(Agent):
@@ -37,8 +37,17 @@ class ReverseHeadAgent(Agent):
         )
         self.base.add(self.distance)
 
-        # RGBSensor has been removed due to not having the opportunity
-        # to implement to environment
+        # RGBSensor normally returns values from 0-255 following the colour gambit
+        # We need change the normalize parameter to true so our observation space can use the values
+        self.rgb = RGBSensor(
+            fov=180,
+            resolution=64,
+            max_range=400,
+            invisible_elements=self._parts,
+            invisible_when_grasped=True,
+            normalize=True,
+        )
+        self.head.add(self.rgb)
 
         # COMMS
         self.comm = Communicator()
