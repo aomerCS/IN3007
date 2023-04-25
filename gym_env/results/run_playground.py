@@ -1,9 +1,17 @@
 # Simple environment showcasing the apple agent collision
-from gym_env.results.results import playground1
+from resources.create_playground import createPlayground
 from spg.view import HeadAgentGUI
 
-# #gui = HeadAgentGUI(playground=playground1, keyboard_agent=playground1.agents[0], random_agents=False)
-gui = HeadAgentGUI(playground1, playground1.agents[0])
-gui.run()
+# Simplest playground, no perturbation
+playground = createPlayground(
+    (False, False),
+    [
+        [(-100, 30), (False, False)],
+        [(100, 10), (False, False)],
+        [(100, 100), (False, False)],
+        [(-100, -100), (False, False)],
+    ],
+)
 
-# Code that if all apples are eaten, a super apple with 100 reward will spawn in the center
+gui = HeadAgentGUI(playground, playground.agents[0], random_agents=False)
+gui.run()
