@@ -1,15 +1,3 @@
-pyyaml
-pymunk>=6.0.0
-numpy
-scikit-image
-pillow
-pytest
-matplotlib
-gym
-arcade
-tripy
-tqdm
 spg
 jupyter
 stable-baselines3
-black[jupyter]

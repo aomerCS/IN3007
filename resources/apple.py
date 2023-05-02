@@ -11,16 +11,25 @@ AppleCollisionType = add_custom_collision(CollisionTypes, "APPLE")
 
 # Create Apple Class
 class Apple(PhysicalElement, RewardElement):
-    def __init__(self, agent, reverse_x: bool = False, reverse_y: bool = False):
+    def __init__(
+        self,
+        agent,
+        # Determines image for apple
+        filename: Path = Path("../../resources/red_apple.png"),
+        # First tuple value is for x, second tuple is for y
+        reverse: (bool, bool) = (
+            False,
+            False,
+        ),
+    ):
         super().__init__(
             mass=10,
-            filename=Path("../../resources/red_apple.png"),
-            radius=10,
+            filename=filename,
+            radius=20,
         )
 
         self.agent = agent.base
-        self.reverse_x = reverse_x
-        self.reverse_y = reverse_y
+        self.reverse = reverse
 
     # Every Apple created will use the new custom collision type
     def _set_pm_collision_type(self):

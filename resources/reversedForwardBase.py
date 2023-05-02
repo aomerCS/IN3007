@@ -4,7 +4,7 @@
 # This allows us to deceive a player due to their controls being reversed compared to what is expected
 
 # Assume any code that does not have a line stating it was changed or comment explaining it,
-# was taken from the file in the spg library spg/part/parts
+# was taken from the file in the spg library spg/agent/part/parts
 
 from __future__ import annotations
 
@@ -16,14 +16,14 @@ from spg.agent.controller import CenteredContinuousController
 from spg.agent.part import PhysicalPart
 
 
+# reverse will determine if the controller commands of the agent is reversed
+# First tuple value is for x, second tuple is for y
 class ReversedForwardBase(PhysicalPart):
     def __init__(
         self,
         linear_ratio: float = 1,
         angular_ratio: float = 1,
-        # reverse_x and reverse_y will determine if the controller commands of the agent is reversed
-        reverse_x: bool = False,
-        reverse_y: bool = False,
+        reverse: tuple = (False, False),
         **kwargs,
     ):
         super().__init__(
@@ -44,9 +44,9 @@ class ReversedForwardBase(PhysicalPart):
         self.angular_ratio = ANGULAR_VELOCITY * angular_ratio
 
         # Reverses the direction of the base
-        if reverse_y:
+        if reverse[-1]:
             self.linear_ratio = -self.linear_ratio
-        if reverse_x:
+        if reverse[0]:
             self.angular_ratio = -self.angular_ratio
 
     def _apply_commands(self, **kwargs):
@@ -62,9 +62,9 @@ class ReversedForwardBase(PhysicalPart):
     # New function that makes changes after an apple collision
     def activate(self, entity: RewardElement):
         # Reverses the direction of the base
-        if entity.reverse_y:
+        if entity.reverse[-1]:
             self.linear_ratio = -self.linear_ratio
-        if entity.reverse_x:
+        if entity.reverse[0]:
             self.angular_ratio = -self.angular_ratio
         # Gives the colliding entity a reward
         agent = self._playground.get_closest_agent(self)

@@ -1,2 +1,4 @@
-red_apple.png image is public domain, no copyright license required
+pixel_apple.png image is public domain, no copyright license required
 Link to obtain image: https://commons.wikimedia.org/wiki/File:PixelApple.png
+
+red_apple.png, blue_apple.png, green_apple.png and black_apple.png are based off pixel_apple.png, and edited by the author of the project

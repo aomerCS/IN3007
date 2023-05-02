@@ -14,14 +14,13 @@ from spg.agent.part import Head
 from spg.agent.sensor import DistanceSensor, RGBSensor
 
 
+# First tuple value is for x, second tuple is for y
 class ReverseHeadAgent(Agent):
-    def __init__(self, reverse_x: bool = False, reverse_y: bool = False, **kwargs):
+    def __init__(self, reverse: tuple = (False, False), **kwargs):
         super().__init__(**kwargs)
 
         # We want this agent to be capable of reversing, so we give it the new class as its base
-        base = ReversedForwardBase(
-            linear_ratio=10, reverse_x=reverse_x, reverse_y=reverse_y
-        )
+        base = ReversedForwardBase(linear_ratio=10, reverse=reverse)
         self.add(base)
 
         self.head = Head(rotation_range=math.pi)
